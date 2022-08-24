@@ -1,0 +1,24 @@
+Systemctl restart docker
+
+Sudo /etc/init.d/docker restart
+Docker ps  ( show running container)
+
+Docker ps  -a   (show all containers)
+
+Docker attach containerid  (to get into running command)
+
+Docker stop containerid/name  ( to stop the container )
+
+Docker start containerid  (  
+
+Docker restart containerid  (to restart the container)
+
+Docker ps -l (latest stopped containers will be shown
+
+Docker logs containerid  ( it will show logs)
+
+Sudo docker -f bookingservices
+Curl -v "http://localhost:8080/bookingservcies/healthcheck/ 
+
+Docker exec -it containerid bin/bash.    (this command is only to connect or run to container if the container is already running or start.
+
