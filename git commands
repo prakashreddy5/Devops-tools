@@ -1,0 +1,41 @@
+Git status
+Git add .
+Git commit -m " "
+
+Git branch
+
+Git push origin prakash/frontend_migration
+
+Git log
+
+Git log --online
+
+Git show commitid
+
+Git add -a
+
+Git reset head filename   (this bring back file from index to workspace)
+
+Git log --author= name 
+
+Git reset --soft CID  (to revert file from local repo to index you have to use cid below the latestone
+
+Git reset --hard commitid (to delete from local reposit)
+
+Git pull --rebase (it is used to resolve conflict )
+
+Git checkout branchname. (used to change branch)
+
+Git branch
+
+Git branch branchname (to create a branchname)
+
+Git merge branch (from where you have to copy data to your new master).
+
+Git push origin branchname (to push branch to central repo)
+
+Git branch -d branchname
+
+Git push origin -d branchname 
+
+Git checkout -b branchname  (to create branch and enter into branch)
