@@ -1,0 +1,166 @@
+Cd /
+
+Ll   to list the files
+
+Ls -la   to show hidden file
+
+Cd /opt/   to enter opt dir
+
+Mkdir name       (create a directory)
+
+Pwd   (to sho files in directory)
+
+Touch filename ( to create a file name )
+
+Vi filename ( to edit the file )
+
+Cat filename  (to view the file )
+
+Who (list users in server and ip address)
+
+Rm filename 
+
+Rm -rf filename (direct delete)
+
+Mkdir -p directoryname. (to create directory inside directory)
+
+Cp src dest   (copy from source to destination)
+Mv src dest ( to move)
+
+Cp -r src dest (if a directory is not empty use this to copy)
+Useradd name
+
+Passwd username
+
+Cat /etc/passwd. (list of users)
+
+Su  -username  (to change user)
+
+Wall -n "hello all"  (to send message to all)
+.whoami
+	2. Man (this command will diplay what the other commands do ex: man whoami)
+	3. Control + l (to clear the screen)
+	4. Pwd will give the current location.
+	5. Ls (will list the content)
+	6. Cd ~ ( it will take you to home )
+	7. Cd ~/desktop (the symbol work as a home )
+	8. Mkdir -p prakash/lavanya/weds (-p is used for nested directory)
+Mkdir (folder),  touch(create a file), cat (to view file) vi (to edit the file) rm(to delete file
+
+Docker. File script:
+
+FROM ubuntu: latest
+MAINTAINER D Clinton
+info@bootstrap-it.com
+RUN apt-get update
+RUN apt-get install -y apache2
+ADD index.html /var/www/html/
+CMD /usr/sbin/apache2ctl -D
+FOREGROUND
+EXPOSE 80
+
+TRouble shooting:
+sudo docker login ecommDevopsAksAzcr.azurecr.io -u $sp_appid -p $sp_pass
+   20  docker logout
+   21  exit
+   22  cat /etc/resolv.conf
+   23  lshw -class network
+   24  sudolshw -class network
+   25  sudo lshw -class network
+   26  ping www.cisco.com
+   27  ping www.cisco.com -c 10
+   
+   sudo cat /etc/docker/daemon.json
+   15  sudo systemctl status docker
+   16  lshw -class MEM
+   17  sudo lshw -class MEMORY
+   18  sudo lshw -class CPU
+   19  sudo cat /etc/hosts
+   20  ip route
+   
+   [root@smkpdigecom01 ~]# nslookup 10.191.132.14
+** server can't find 14.132.191.10.in-addr.arpa: NXDOMAIN
+
+
+
+[root@smkpdigecom01 ~]# nslookup 10.191.132.15
+** server can't find 15.132.191.10.in-addr.arpa: NXDOMAIN
+
+
+[root@smkpdigecom01 ~]#
+[root@smkpdigecom01 ~]# nslookup 10.192.132.14
+14.132.192.10.in-addr.arpa      name = ib-wdc-secondary.westjet.priv.
+
+
+[root@smkpdigecom01 ~]#
+[root@smkpdigecom01 ~]# nslookup 10.192.132.15
+15.132.192.10.in-addr.arpa      name = ib-edc-primary.westjet.priv.
+[10-13 10:33 a.m.] Partha Kaushik
+and I am able to docker login:
+[suncatcher@smkpdigecom01 ~]$ sudo docker login ecommDevopsAksAzcr.azurecr.io -u $sp_appid -p $sp_passWARNING! Using --password via the CLI is insecure. Use --password-stdin.WARNING! Your password will be stored unencrypted in /root/.docker/config.json.Configure a credential helper to remove this warning. Seehttps://docs.docker.com/engine/reference/commandline/login/#credentials-storeLogin Succeeded
+ like 2
+
+[10-13 10:40 a.m.] Prakash Reddy Bokka
+Partha Kaushiknot fixed but bypassed the problem
+Can we continue with this or any other solution we have to look for ?
+
+
+
+I did further investigation on the network issue from the one VM, here is what I find:
+
+the DNS configuration are similar on both the 'slow' and 'normal' servers
+NIC card properties are exactly the same
+ping to www.cisco.com clearly indicates that the 'slow' machine takes inordinately long to make the initial connectin
+the ping results :
+
+'normal' VM smkpdigecom02 -
+
+[suncatcher@smkpdigecom02 ~]$ ping www.cisco.com -c 10
+
+PING e2867.dsca.akamaiedge.net (104.65.171.211) 56(84) bytes of data.
+
+64 bytes from a104-65-171-211.deploy.static.akamaitechnologies.com (104.65.171.211): icmp_seq=1 ttl=52 time=55.1 ms
+
+64 bytes from a104-65-171-211.deploy.static.akamaitechnologies.com (104.65.171.211): icmp_seq=2 ttl=52 time=55.1 ms
+
+--- e2867.dsca.akamaiedge.net ping statistics ---
+
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+
+rtt min/avg/max/mdev = 55.040/55.106/55.212/0.215 ms
+
+ 
+
+'slow' VM smkpdigecom01 -
+
+[suncatcher@smkpdigecom01 ~]$ ping www.cisco.com -c 10
+
+PING e2867.dsca.akamaiedge.net (184.86.146.98) 56(84) bytes of data.
+
+64 bytes from a184-86-146-98.deploy.static.akamaitechnologies.com (184.86.146.98): icmp_seq=1 ttl=45 time=41.3 ms
+
+64 bytes from a184-86-146-98.deploy.static.akamaitechnologies.com (184.86.146.98): icmp_seq=2 ttl=45 time=41.2 ms
+
+ 
+
+--- e2867.dsca.akamaiedge.net ping statistics ---
+
+10 packets transmitted, 10 received, 0% packet loss, time 16103ms
+
+rtt min/avg/max/mdev = 41.152/41.214/41.309/0.226 ms
+
+Cisco - Networking, Cloud, and Cybersecurity Solutions
+
+Cisco delivers innovative software-defined networking, cloud, and security solutions to help transform your business, empowering an inclusive future for all.
+
+ 
+
+ 
+
+ 
+
+Total time for 10 pings is 16103ms vs 9012ms, all the difference is in when the first reply is received
+
+Note that the 'slow' machine is connecting thru e2867.dsca.akamaiedge.net (184.86.146.98)
+
+while the 'normal' machine is connecting thru e2867.dsca.akamaiedge.net (104.65.171.211)
